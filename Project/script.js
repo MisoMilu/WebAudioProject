@@ -159,17 +159,19 @@ class Particle{
 
 /*Make a custom function that makes the Particle 
 a lot of times [0-99] == 100 distint values
-Hint: use the new keyword*/
+Hint: use the new keyword
+This word will run 100 times with 100 randomized particle objects*/
 function init(){
   for(let i = 0; i<100;i++){  
     /*Inside the for loop, need a data structure to
     hold particle objects*/
     particlesArray.push(new Particle()) // new will trigger its constructor method.
-     
+    
   }
 }
-
-
+// check the particle object
+init();
+console.log(particlesArray);
 
 
 

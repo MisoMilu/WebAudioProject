@@ -660,3 +660,45 @@ Particle counts change continuously at runtime:
 ```
 
 ```
+```markdown
+### 4. Lifecycle Timing: Why `mouse.x` & `mouse.y` Remain `undefined`
+
+#### Developer Question
+*Why are the `x` and `y` properties of the 100 particle objects still `undefined` when hovering over the canvas? Doesn't `mousemove` detect cursor position and pass the coordinates to the particles?*
+
+#### Developer Summary & Core Realization
+*“Oh, so it called `init()` before the user can use the mouse, right?”*  
+**Verdict:** Exactly right.
+
+#### The Execution Timeline Breakdown
+
+```text
+1. Page Loads:
+   Script executes synchronously top-to-bottom in milliseconds.
+   mouse initialized: { x: undefined, y: undefined }
+
+2. init() is called immediately:
+   All 100 Particle instances are created right away.
+   In constructor():
+     this.x = mouse.x  --> receives undefined
+     this.y = mouse.y  --> receives undefined
+
+3. User moves mouse later:
+   mousemove fires: mouse.x = event.x, mouse.y = event.y
+   Existing particles do NOT update because values are copied, not linked.
+
+```
+
+#### Key Mechanics: Pass-by-Value vs. Live Links
+
+* `this.x = mouse.x` copies the snapshot value of `mouse.x` at the exact millisecond the particle is instantiated.
+* It does **not** bind a live reference or link. Updating `mouse.x` later has no effect on particles created earlier.
+
+#### Solutions Depending on Desired Behavior
+
+* **Mouse Trail Effect (Dynamic Spawning):** Do not generate particles inside `init()`. Instead, run `.push(new Particle())` directly inside the `mousemove` event listener so each particle reads the updated coordinates at birth.
+* **Ambient Floating Field (Pre-Spawned):** If pre-generating in `init()`, initialize coordinates using canvas dimensions (`Math.random() * canvas.width`) rather than the mouse object.
+
+```
+
+```
