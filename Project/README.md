@@ -356,3 +356,33 @@ function animate() {
 ```
 
 Usually, the blank cleared canvas is not visible because JavaScript clears it and draws the new shape before the browser displays the next frame.
+
+## September 7: Random sizes with `Math.random()`
+
+**Question:** “Why does `this.size = Math.random() * 5 + 1` create a random value from 1 to 6? Is `Math` a built-in class and `random` a function?”
+
+```js
+this.size = Math.random() * 5 + 1;
+```
+
+`Math` is a built-in JavaScript **object**, not a class. `random()` is a built-in method on that object:
+
+```js
+Math.random();
+```
+
+`Math.random()` returns a decimal number from `0` up to, but not including, `1`:
+
+```text
+[0, 1)
+```
+
+`[` means the number is included, and `)` means the number is not included. So `Math.random()` can return `0`, but it can get only very close to `1`; it never returns exactly `1`.
+
+```text
+Math.random()       -> [0, 1)
+Math.random() * 5   -> [0, 5)
+Math.random() * 5 + 1 -> [1, 6)
+```
+
+**Finding:** The result is exactly `1` at its smallest and can get almost to `6`, but never exactly `6`. It can be values such as `1`, `2.73`, or `5.9999`.

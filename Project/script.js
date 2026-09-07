@@ -68,7 +68,7 @@ canvas.addEventListener('click', function(event){
   event that just occured. such as x, y cooridinates of the click and more */
   mouse.x = event.x;
   mouse.y = event.y;
-  drawCircle(); 
+  //drawCircle(); 
 
   /*since mouse is a global object, 
   now the information stored in the event
@@ -91,7 +91,7 @@ canvas.addEventListener('click', function(event){
 canvas.addEventListener('mousemove',function(event){
   mouse.x = event.x
   mouse.y = event.y
-  drawCircle(); // drawCircle is being called over and over again 
+  //drawCircle(); // drawCircle is being called over and over again 
   //console.log(event); // omg so much haha 
 })
 
@@ -103,7 +103,7 @@ function drawCircle(){
   ctx.fillStyle = 'orange';
   //ctx.beginPath();
   //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
-  ctx.fillRect(mouse.x, mouse.y, 20,20);
+  ctx.fillRect(mouse.x, mouse.y, 20,20);// fills rectangle based on mouse movement already 
   ctx.fill();
 }
 
@@ -126,10 +126,31 @@ ctx.stroke(); // stroke() is for not filled circle
 console.log(ctx);
 
 
+// Custom class - yay create own object in javascript!. To create particle system
+class Particle{
+
+  // mandatory constructor method
+  constructor(){
+    this.x = mouse.x;
+    this.y = mouse.y;
+    this.size = Math.random()*5 + 1 // one to almost 6. [1, 6)
+    this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
+    this.speedY = Math.random()*3 - 1.5 
+  }
+  // behavior will be defined as methods of this class. its functions of the object
+}
+
+
+
+
+
 //custom function  will be called over and over creating a function loop
 function animate(){
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear old painting
-  // draw the new frame here
-  requestAnimationFrame(animate);// it just calls function as we pass it as an argument
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
+  drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
+  // BUilt-in function : it just calls function as we pass it as an argument
+  // this function is just for repetition
+  requestAnimationFrame(animate);
+  // this is like person on the whilteboard: wipe, draw. again. wipe, draw. again. wipe, draw..
 }
 animate();
