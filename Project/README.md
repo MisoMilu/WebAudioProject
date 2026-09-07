@@ -232,3 +232,37 @@ canvas.addEventListener('click', function (clickInfo) {
 ```
 
 In this example, `clickInfo` refers to the same click-event object that was called `event` in the earlier example.
+
+### Why the Console shows `PointerEvent`
+
+When a user clicks, modern browsers often create a `PointerEvent`. This is normal. A `PointerEvent` includes the usual mouse information and extra information for other input devices, such as touchscreens and styluses.
+
+```text
+PointerEvent
+    ↓ inherits from
+MouseEvent
+    ↓ inherits from
+UIEvent
+    ↓ inherits from
+Event
+```
+
+Because `PointerEvent` inherits from `MouseEvent`, it still has mouse-style position properties:
+
+```js
+event.x
+event.y
+event.clientX
+event.clientY
+```
+
+It can also provide extra pointer information:
+
+```js
+event.pointerId
+event.pressure
+event.width
+event.height
+```
+
+Browsers use `PointerEvent` so the same click code can work with a mouse, touchscreen, or stylus.
