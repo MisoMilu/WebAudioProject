@@ -1,5 +1,7 @@
 # Canvas Basics
 
+**Date:** September 6
+
 This project is a first practice with the HTML `<canvas>` element and JavaScript drawing.
 
 ## What I learned

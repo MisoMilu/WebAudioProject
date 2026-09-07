@@ -14,7 +14,8 @@ const ctx = canvas.getContext('2d') // Hey, give me tools to draw 2D things on C
 //3.5 Prints the 2D drawing tools (ctx) to the Console, so you can confirm they were created.
 console.log(ctx);
 
-
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
 
 // THis means: “Listen for an event happening in the browser window.”
 //It needs:
@@ -25,7 +26,6 @@ window.addEventListener('resize', function(){
   // so rect dont distort when we change size of window
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  
   // draw again because canvas.width and canvas.height clears the entire canvas
   //resizing the canvas like replacing it with a fresh blank drawing surface.
   ctx.fillStyle = 'white'
