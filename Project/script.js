@@ -52,8 +52,8 @@ get called too*/
 
 // Custom mouse object. its a global object
 const mouse = {
-  x: null, // Inittially, the mouse will contain x and y  properties
-  y: null,
+  x: undefined, // Inittially, the mouse will contain x and y  properties
+  y: undefined, // x and y is set to undefined because we what to start with blnk canvas 
 
 }
 
@@ -68,7 +68,7 @@ canvas.addEventListener('click', function(event){
   event that just occured. such as x, y cooridinates of the click and more */
   mouse.x = event.x;
   mouse.y = event.y;
-  drawCircle();
+  drawCircle(); 
 
   /*since mouse is a global object, 
   now the information stored in the event
@@ -91,8 +91,8 @@ canvas.addEventListener('click', function(event){
 canvas.addEventListener('mousemove',function(event){
   mouse.x = event.x
   mouse.y = event.y
-  drawCircle();
-  console.log(event); // omg so much haha
+  drawCircle(); // drawCircle is being called over and over again 
+  //console.log(event); // omg so much haha 
 })
 
 // What if we want to draw multiple circles
@@ -101,8 +101,9 @@ canvas.addEventListener('mousemove',function(event){
 // it only kepts in memeroy 
 function drawCircle(){
   ctx.fillStyle = 'blue';
-  ctx.beginPath();
-  ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
+  //ctx.beginPath();
+  //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
+  ctx.fillRect(mouse.x, mouse.y, 20,20);
   ctx.fill();
 }
 
@@ -123,3 +124,6 @@ ctx.arc(150,100,40,0,Math.PI * 2)// coordinates (100,100) is the central point
 ctx.stroke(); // stroke() is for not filled circle
 // check again in console. all these are stored in the ctx variable
 console.log(ctx);
+
+
+//custom function
