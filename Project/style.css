@@ -1,0 +1,8 @@
+#canvas1 { /* Selects the HTML element with id="canvas1". */
+  position: absolute; /* Lets us place the canvas using top and left. */
+  background: black; /* Makes the canvas background black. */
+  width: 100%; /* Makes the canvas as wide as its container. */
+  height: 100%; /* Makes the canvas as tall as its container. */
+  top: 0; /* Places the canvas at the top of its container. */
+  left: 0; /* Places the canvas at the left edge of its container. */
+}
