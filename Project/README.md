@@ -386,3 +386,38 @@ Math.random() * 5 + 1 -> [1, 6)
 ```
 
 **Finding:** The result is exactly `1` at its smallest and can get almost to `6`, but never exactly `6`. It can be values such as `1`, `2.73`, or `5.9999`.
+
+## September 7: Object properties such as `speedX` and `speedY`
+
+**Question:** “How does JavaScript know there is a `speedX` and `speedY` property? Why do they not need to write the properties at the top first?”
+
+```js
+this.speedX = Math.random() * 3 - 1.5;
+this.speedY = Math.random() * 3 - 1.5;
+```
+
+`this` means the current object being created or used. JavaScript objects can have properties added whenever needed. When JavaScript reaches this line:
+
+```js
+this.speedX = 1;
+```
+
+it checks whether the current object already has a `speedX` property. If it does not, JavaScript creates that property automatically. Therefore, the properties do not need to be declared at the top first.
+
+`speedX` and `speedY` are names chosen by the programmer. After the assignments, an object could look like this:
+
+```js
+{
+  speedX: 0.82,
+  speedY: -1.14
+}
+```
+
+They can be used later to move the object:
+
+```js
+this.x += this.speedX; // Move left or right.
+this.y += this.speedY; // Move up or down.
+```
+
+**Finding:** In JavaScript, assigning a value to a new property name automatically creates that property on the object. Some stricter programming languages require properties to be declared first, but JavaScript does not.

@@ -135,7 +135,7 @@ class Particle{
     this.y = mouse.y;
     this.size = Math.random()*5 + 1 // one to almost 6. [1, 6)
     this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
-    this.speedY = Math.random()*3 - 1.5 
+    this.speedY = Math.random()*3 - 1.5 //[-1.5, 1.5)
   }
   // behavior will be defined as methods of this class. its functions of the object
 }
