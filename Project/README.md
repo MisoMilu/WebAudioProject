@@ -329,3 +329,30 @@ animate();
 The first `animate()` starts the animation. Inside the function, `requestAnimationFrame(animate)` passes the `animate` function to the browser and means: “Call this function again at the next screen refresh.” The browser gets a chance to paint the current frame before calling it again.
 
 Do not write `requestAnimationFrame(animate())`. Parentheses call `animate` immediately, which repeatedly calls itself without waiting for the browser to paint. That can freeze the page or cause a stack overflow.
+
+### Question: Why clear the current frame instead of the previous one?
+
+**Question:** “Why is it clearing the current frame but not the previous frame? Why is it not drawing on the current frame for `animate`?”
+
+The canvas does not store separate previous-frame and current-frame objects. It is one drawing surface. At the beginning of a new animation loop, the canvas still contains the drawing from the last time `animate()` ran. That existing drawing is what we call the **previous frame**.
+
+```text
+Canvas currently shows: circle at x = 100  <- previous frame
+
+animate() runs again:
+1. clearRect() removes what is currently on the canvas
+2. draw circle at x = 105                <- new/current frame
+3. browser displays the new frame
+```
+
+The code does draw the current frame. The drawing code after `clearRect()` creates it:
+
+```js
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Remove old circle.
+  ctx.arc(x, y, 40, 0, Math.PI * 2);                // Draw new circle.
+  requestAnimationFrame(animate);
+}
+```
+
+Usually, the blank cleared canvas is not visible because JavaScript clears it and draws the new shape before the browser displays the next frame.
