@@ -52,6 +52,7 @@ ctx.fillRect(10,20,150,50);// coordinates (10,20) is the upper left starting poi
 
 // Draw a circle
 ctx.fillStyle = 'red'
+ctx.strokeStyle - 'red'
 /*For lines, you not only need to 
 speficy values first, you need to first all beginPath() as well*/
 ctx.beginPath();

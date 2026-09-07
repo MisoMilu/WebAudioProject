@@ -69,6 +69,65 @@ window.addEventListener('resize', function () {
 
 `addEventListener` tells the browser to listen for an event. When the user resizes the window, the browser fires a `resize` event and automatically calls the function. The function then updates the canvas size.
 
+### 7. Where `ctx` drawing methods come from
+
+`CanvasRenderingContext2D` is a built-in browser interface. It describes the kind of object returned by:
+
+```js
+const ctx = canvas.getContext('2d');
+```
+
+You can think of it as the browser's built-in collection of 2D canvas drawing tools. More precisely, it is an interface/type, not a library that you install. The browser already includes tools such as:
+
+```js
+ctx.arc();
+ctx.fillRect();
+ctx.fill();
+ctx.stroke();
+ctx.fillText();
+```
+
+The browser already provides the drawing methods. The shared methods live on a JavaScript object called a **prototype**:
+
+```js
+CanvasRenderingContext2D.prototype.arc
+CanvasRenderingContext2D.prototype.fillRect
+CanvasRenderingContext2D.prototype.fill
+```
+
+The prototype does **not** inherit from `CanvasRenderingContext2D`. It is the prototype object associated with that built-in interface. `ctx` is the object that inherits access to this prototype.
+
+Both `ctx` and the prototype are objects, but they have different jobs:
+
+```text
+ctx       = your specific drawing toolbox
+prototype = the shared object containing built-in drawing tools
+```
+
+`ctx` is **not** the prototype object. Instead, `ctx` **inherits access** to the methods on the prototype. That is why you can use built-in methods such as `arc()`, `fill()`, and `fillRect()` without creating them yourself.
+
+```text
+ctx -> CanvasRenderingContext2D.prototype -> Object.prototype
+```
+
+The arrow means: “if `ctx` needs a method, it can look on its prototype.”
+
+For example, when JavaScript sees this:
+
+```js
+ctx.arc(200, 200, 50, 0, Math.PI * 2);
+```
+
+it looks for `arc` on `ctx`. If it is not directly on `ctx`, JavaScript follows the prototype chain and finds `arc` on `CanvasRenderingContext2D.prototype`.
+
+You do not normally use the prototype directly. You use `ctx`:
+
+```js
+ctx.arc(...);
+```
+
+In short: `ctx` is your drawing object. It inherits access to the browser's shared drawing methods from its prototype.
+
 ## Important note
 
 Set the canvas size once when the page first loads as well as when the window resizes. Otherwise, the resize code only runs after the user changes the window size.
