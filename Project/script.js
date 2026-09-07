@@ -12,7 +12,24 @@ const ctx = canvas.getContext('2d') // Hey, give me tools to draw 2D things on C
 //3. Chek if Javascripts has succesfully found canvas. -> need to go to browswer and inspect, then hit console 
 // to see that java prints out the value in the console
 //3.5 Prints the 2D drawing tools (ctx) to the Console, so you can confirm they were created.
-console.log(ctx);
+//console.log(ctx);
+
+
+
+// THis means: “Listen for an event happening in the browser window.”
+//It needs:
+//1. The event name, such as 'resize'
+//2. A function to run when it happens
+window.addEventListener('resize', function(){
+  // make sure canvas is the same size as the browswer window
+  // so rect dont distort when we change size of window
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+})
+/* addEventListenso the event is automatically created when the user 
+resize window, it automatically gets created and 
+pass in. and after that the function() will automaiclaly 
+get called too*/
 
 // try to draw using ctx and see if it appears on the screen
 ctx.fillStyle = 'white'
