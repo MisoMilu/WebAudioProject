@@ -68,6 +68,7 @@ canvas.addEventListener('click', function(event){
   event that just occured. such as x, y cooridinates of the click and more */
   mouse.x = event.x;
   mouse.y = event.y;
+  drawCircle();
 
   /*since mouse is a global object, 
   now the information stored in the event
@@ -85,6 +86,17 @@ canvas.addEventListener('click', function(event){
    */
 
 })
+
+// What if we want to draw multiple circles
+// Make a resusable function: so we can draw circles easy over and over again
+// This is called function declaration. but javascript will not run the code.
+// it only kepts in memeroy 
+function drawCircle(){
+  ctx.fillStyle = 'blue';
+  ctx.beginPath();
+  ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
+  ctx.fill();
+}
 
 // try to draw using ctx and see if it appears on the screen
 ctx.fillStyle = 'white'
