@@ -143,3 +143,25 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 ```
+
+## September 7: `const`
+
+`const` creates a variable whose value cannot be reassigned later.
+
+```js
+const canvas = document.getElementById('canvas1');
+```
+
+This creates a variable named `canvas` and stores the canvas element in it. You cannot replace `canvas` with a different value:
+
+```js
+canvas = 'hello'; // Error
+```
+
+However, `canvas` refers to an object, and you can still change that object's properties:
+
+```js
+canvas.width = 800; // Allowed
+```
+
+Use `const` when a variable should keep referring to the same value or object.
