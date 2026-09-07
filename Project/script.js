@@ -44,10 +44,32 @@ window.addEventListener('resize', function(){
 
   
 })
-/* addEventListenso the event is automatically created when the user 
+/* addEventListensor the event is automatically created when the user 
 resize window, it automatically gets created and 
 pass in. and after that the function() will automaiclaly 
 get called too*/
+
+
+
+const mouse = {
+  x: null, // Inittially, the mouse will contain x and y  properties
+  y: null,
+
+}
+
+
+// addEventListener takes in a clikc object and a callback function.
+canvas.addEventListener('click', function(event){ 
+  /*The canvas listens for a user input. 
+  Once the user click, 'click' object is created automatically
+  , and autoamtically get pass in addEventListener(), the function(event)
+  also gets called automatically because the event object inside 
+  function(event) inside contains all the information that the 'click'
+  event that just occured. such as x, y cooridinates of the click and more */
+  mouse.x = event.x;
+  mouse.y = event.y;
+
+})
 
 // try to draw using ctx and see if it appears on the screen
 ctx.fillStyle = 'white'

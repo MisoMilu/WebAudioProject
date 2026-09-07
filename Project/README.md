@@ -165,3 +165,53 @@ canvas.width = 800; // Allowed
 ```
 
 Use `const` when a variable should keep referring to the same value or object.
+
+## September 7: Click events and `function(event)`
+
+```js
+canvas.addEventListener('click', function (event) {
+  mouse.x = event.x;
+  mouse.y = event.y;
+});
+```
+
+`addEventListener` takes two things:
+
+1. An event name, such as `'click'`.
+2. A callback function: code the browser should run later when that event happens.
+
+`function` is a built-in JavaScript keyword that creates a function. The function in this example is written by us; we decide what it does.
+
+```js
+function (event) {
+  // Code here runs after the canvas is clicked.
+}
+```
+
+`event` is a parameter. It means: “When the browser calls this function, give the click information to me and call it `event`.” When the user clicks the canvas, the browser automatically creates a click-event object and passes it to the callback function.
+
+```text
+User clicks canvas
+      ↓
+Browser creates a click-event object
+      ↓
+Browser calls the callback function and passes in that object
+      ↓
+event refers to that click-event object
+```
+
+The event object includes information about the click, including its position:
+
+```js
+event.x // horizontal click position
+event.y // vertical click position
+```
+
+These lines save that position in a `mouse` object:
+
+```js
+mouse.x = event.x;
+mouse.y = event.y;
+```
+
+The parameter can technically have any name, but `event` is the normal, clear name.
