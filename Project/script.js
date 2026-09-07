@@ -6,7 +6,7 @@ const canvas = document.getElementById('canvas1');
 //2.Gets the canvas's 2D drawing context and stores it in ctx
 // use ctx to draw shapes, text, images, lines and more
 // A drawing context is the object that gives you the tools to draw onto a canvas.
-const ctx = canvas.getContext('2d') // Hey, give me tools to draw 2D things on Canvas
+const ctx = canvas.getContext('2d'); // Hey, give me tools to draw 2D things on Canvas
 
 //3. Check if canvas is succesfully in showing in browser if its console.log('canvas')
 //3. Chek if Javascripts has succesfully found canvas. -> need to go to browswer and inspect, then hit console 
@@ -14,9 +14,9 @@ const ctx = canvas.getContext('2d') // Hey, give me tools to draw 2D things on C
 //3.5 Prints the 2D drawing tools (ctx) to the Console, so you can confirm they were created.
 console.log(ctx);
 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const particlesArray =[];
 // THis means: “Listen for an event happening in the browser window.”
 //It needs:
 //1. The event name, such as 'resize'
@@ -119,7 +119,7 @@ speficy values first, you need to first all beginPath() as well*/
 ctx.lineWidth = 10;
 ctx.beginPath();
 // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-ctx.arc(150,100,40,0,Math.PI * 2)// coordinates (100,100) is the central point
+ctx.arc(150,100,40,0,Math.PI * 2)// coordinates (150,100) is the central point
 //ctx.fill();
 ctx.stroke(); // stroke() is for not filled circle
 // check again in console. all these are stored in the ctx variable
@@ -128,16 +128,44 @@ console.log(ctx);
 
 // Custom class - yay create own object in javascript!. To create particle system
 class Particle{
-
   // mandatory constructor method
   constructor(){
+     /*The properties of Particle are (x,y), size and speed */
     this.x = mouse.x;
     this.y = mouse.y;
     this.size = Math.random()*5 + 1 // one to almost 6. [1, 6)
+    // particles should be able to move left and right
     this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
+    // particles should be able to move down and up
     this.speedY = Math.random()*3 - 1.5 //[-1.5, 1.5)
   }
   // behavior will be defined as methods of this class. its functions of the object
+  /*Now for methods*/
+  update(){
+    //Custom method it will change x and y coordinates based on speedX and speedY values
+    this.x = this.x+ this.speedX; // negative numbers will make particles move to the left. 
+    this.y = this.y + this.speedY;// UP: negative, Down: positive
+  }
+  draw(){ /*Custom method: Its job is to takes values 
+    of constructor and pass it to the arc() method */
+    ctx.fillStyle = 'orange';
+    //ctx.beginPath();
+    //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
+    ctx.beginPath();
+    ctx.arc(this.x, this,y, 50,0, Math.PI*2);// fills rectangle based on mouse movement already 
+    ctx.fill();
+  }
+}
+
+/*Make a custom function that makes the Particle 
+a lot of times [0-99] == 100 distint values
+Hint: use the new keyword*/
+function init(){
+  for(let i = 0; i<100;i++){  
+    /*Inside the for loop, need a data structure to
+    hold particle objects*/
+    particlesArray.push(new Particle())
+  }
 }
 
 
@@ -147,7 +175,7 @@ class Particle{
 //custom function  will be called over and over creating a function loop
 function animate(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
-  drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
+  //drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
   // BUilt-in function : it just calls function as we pass it as an argument
   // this function is just for repetition
   requestAnimationFrame(animate);

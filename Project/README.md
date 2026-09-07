@@ -421,3 +421,11 @@ this.y += this.speedY; // Move up or down.
 ```
 
 **Finding:** In JavaScript, assigning a value to a new property name automatically creates that property on the object. Some stricter programming languages require properties to be declared first, but JavaScript does not.
+
+**Use Arrays to organize multiple copies of particles**
+
+For example, array and its built in method .push(pass in object), to add elements at the end of the array. 
+
+For example: 
+arrayParticle.push(new Particle()) -> notice! use the *new*
+keyword to initialize a custom object. 
