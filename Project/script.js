@@ -30,6 +30,16 @@ window.addEventListener('resize', function(){
   //resizing the canvas like replacing it with a fresh blank drawing surface.
   ctx.fillStyle = 'white'
   ctx.fillRect(10,20,150,50);
+  // Draw a circle
+  ctx.fillStyle = 'red'
+  /*For lines, you not only need to 
+speficy values first, you need to first all beginPath() as well*/
+  ctx.beginPath();
+  // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+  ctx.arc(150,200,50,0,Math.PI * 2)// coordinates (100,100) is the central point
+  ctx.fill();
+
+  
 })
 /* addEventListenso the event is automatically created when the user 
 resize window, it automatically gets created and 
@@ -38,6 +48,13 @@ get called too*/
 
 // try to draw using ctx and see if it appears on the screen
 ctx.fillStyle = 'white'
-ctx.fillRect(10,20,150,50);
+ctx.fillRect(10,20,150,50);// coordinates (10,20) is the upper left starting point
 
-
+// Draw a circle
+ctx.fillStyle = 'red'
+/*For lines, you not only need to 
+speficy values first, you need to first all beginPath() as well*/
+ctx.beginPath();
+// ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+ctx.arc(150,200,50,0,Math.PI * 2)// coordinates (100,100) is the central point
+ctx.fill();
