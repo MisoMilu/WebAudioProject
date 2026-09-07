@@ -87,6 +87,14 @@ canvas.addEventListener('click', function(event){
 
 })
 
+// What if you want the canvas to paint circles when you mouse moves across the canvas?
+canvas.addEventListener('mousemove',function(event){
+  mouse.x = event.x
+  mouse.y = event.y
+  drawCircle();
+  console.log(event); // omg so much haha
+})
+
 // What if we want to draw multiple circles
 // Make a resusable function: so we can draw circles easy over and over again
 // This is called function declaration. but javascript will not run the code.
