@@ -266,3 +266,66 @@ event.height
 ```
 
 Browsers use `PointerEvent` so the same click code can work with a mouse, touchscreen, or stylus.
+
+## September 7: Normal drawing vs. animation
+
+### Drawing once
+
+For a normal drawing, draw the shapes once and leave them on the canvas:
+
+```js
+ctx.fillRect(10, 20, 150, 50);
+
+ctx.fillStyle = 'blue';
+ctx.strokeStyle = 'blue';
+ctx.lineWidth = 10;
+ctx.beginPath();
+ctx.arc(150, 100, 40, 0, Math.PI * 2);
+ctx.stroke();
+```
+
+`fillRect()` draws a filled rectangle immediately. For the circle, `beginPath()` starts a new path, `arc()` adds the circular path, and `stroke()` draws its outline. The code runs quickly; after the script finishes, the browser paints the latest canvas drawing on the screen. “Update the screen” means showing that newest canvas drawing to the user.
+
+For a one-time drawing, `requestAnimationFrame()` is not necessary.
+
+### Why animation clears old drawings
+
+For animation, a shape changes position. Usually, the old frame must be removed before the next frame is drawn:
+
+> My takeaway: for animation, the previous frame needs to be deleted. With a normal drawing, it does not matter what was drawn previously because the drawing stays there. But in animation, each frame needs a clean canvas: wipe out the old frame, go to the new frame, and draw again.
+
+```text
+Frame 1: clear canvas -> draw circle at x = 100
+Frame 2: clear canvas -> draw circle at x = 105
+Frame 3: clear canvas -> draw circle at x = 110
+```
+
+Without clearing, every old circle stays on the canvas, making a trail:
+
+```text
+● ● ● ● ●
+```
+
+`clearRect()` clears part of the canvas. This clears the whole canvas:
+
+```js
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+```
+
+### `requestAnimationFrame()`
+
+```js
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the new frame here.
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+```
+
+The first `animate()` starts the animation. Inside the function, `requestAnimationFrame(animate)` passes the `animate` function to the browser and means: “Call this function again at the next screen refresh.” The browser gets a chance to paint the current frame before calling it again.
+
+Do not write `requestAnimationFrame(animate())`. Parentheses call `animate` immediately, which repeatedly calls itself without waiting for the browser to paint. That can freeze the page or cause a stack overflow.

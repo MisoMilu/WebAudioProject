@@ -100,7 +100,7 @@ canvas.addEventListener('mousemove',function(event){
 // This is called function declaration. but javascript will not run the code.
 // it only kepts in memeroy 
 function drawCircle(){
-  ctx.fillStyle = 'blue';
+  ctx.fillStyle = 'orange';
   //ctx.beginPath();
   //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
   ctx.fillRect(mouse.x, mouse.y, 20,20);
@@ -126,4 +126,10 @@ ctx.stroke(); // stroke() is for not filled circle
 console.log(ctx);
 
 
-//custom function
+//custom function  will be called over and over creating a function loop
+function animate(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear old painting
+  // draw the new frame here
+  requestAnimationFrame(animate);// it just calls function as we pass it as an argument
+}
+animate();
