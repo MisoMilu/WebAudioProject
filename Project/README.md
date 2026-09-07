@@ -429,3 +429,234 @@ For example, array and its built in method .push(pass in object), to add element
 For example: 
 arrayParticle.push(new Particle()) -> notice! use the *new*
 keyword to initialize a custom object. 
+
+
+```markdown
+---
+
+## Notes: Particle System Architecture & Motion Logic
+
+### 1. Code Implementation
+
+```javascript
+class Particle {
+  constructor() {
+    // Initial random placement when the particle is created
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = 20;
+
+    // Velocities (speed + direction)
+    this.speedX = Math.random() * 3 - 1.5;
+    this.speedY = Math.random() * 3 - 1.5;
+  }
+
+  // State / Physics Step
+  update() {
+    this.x += this.speedX; // Left: negative, Right: positive
+    this.y += this.speedY; // Up: negative, Down: positive
+  }
+
+  // Render Step
+  draw() {
+    ctx.fillStyle = 'orange';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+```
+
+---
+
+### 2. Method Breakdown & Conceptual Reasoning
+
+#### `update()` — State & Motion
+
+* **Logic:** Updates the coordinates by adding velocity (`speedX`, `speedY`) to the current coordinates (`x`, `y`).
+* **2D Vector Math:** Operates on the standard Euler integration formula:
+
+$$\text{New Position} = \text{Current Position} + \text{Velocity}$$
+
+
+* **Directional Axes in Canvas:**
+* Horizontal ($x$): Adding negative values moves left; adding positive moves right.
+* Vertical ($y$): The canvas origin $(0, 0)$ is top-left, so negative moves **up** and positive moves **down**.
+
+
+* **Key Distinction:** `update()` does **not** teleport or reassign the particle to a random position. Spawning/random initialization happens in the `constructor()`; `update()` simply advances the particle along its trajectory frame by frame.
+
+#### `draw()` — Rendering
+
+* **Logic:** Translates stored instance properties (`this.x`, `this.y`, `this.size`) into visible canvas paths using 2D context methods (`beginPath()`, `arc()`, `fill()`).
+* **Role:** Purely responsible for displaying current state on screen; contains no motion or collision calculations.
+
+---
+
+### 3. Architectural Design
+
+* **Separation of Concerns:** Splitting state recalculation (`update()`) and visual rendering (`draw()`) into separate methods mirrors standard game loops and graphics engine patterns.
+* **Maintainability:** Decoupling physics from rendering ensures cleaner, modular code that is easy to extend (e.g., adding gravity, edge collisions, or opacity fade-out without modifying canvas drawing calls).
+
+```
+
+```
+```markdown
+---
+
+## Q&A & Developer Notes: Particle System Architecture
+
+### 1. Code Implementation
+
+```javascript
+class Particle {
+  constructor() {
+    // Initial random placement when the particle is instantiated
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = 20;
+
+    // Velocities (speed + direction)
+    this.speedX = Math.random() * 3 - 1.5;
+    this.speedY = Math.random() * 3 - 1.5;
+  }
+
+  // State / Physics Step
+  update() {
+    this.x += this.speedX; // Left: negative, Right: positive
+    this.y += this.speedY; // Up: negative, Down: positive
+  }
+
+  // Render Step
+  draw() {
+    ctx.fillStyle = 'orange';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+```
+
+---
+
+### 2. Method Breakdown & Conceptual Reasoning
+
+#### `update()` — State & Motion
+
+* **Developer Query / Thought:** Does calling `update()` just assign the particle to a random place?
+* **Clarification:** No. `update()` advances current position along a trajectory using 2D vector movement:
+
+$$\text{New Position} = \text{Current Position} + \text{Velocity}$$
+
+
+* Horizontal ($x$): Adding negative values moves left; adding positive moves right.
+* Vertical ($y$): Canvas origin $(0, 0)$ is top-left, so negative values move **up** and positive values move **down**.
+
+
+* **Key Rule:** Initial random placement belongs in the `constructor()`. `update()` handles frame-by-frame delta movement, not teleportation.
+
+#### `draw()` — Rendering
+
+* **Developer Query / Thought:** Does `draw()` just mean to draw it out?
+* **Clarification:** Yes. Its sole job is translating stored instance values (`x`, `y`, `size`, color) into canvas API calls (`beginPath()`, `arc()`, `fill()`).
+
+#### Separation of Concerns
+
+* **Developer Query / Thought:** Organizing them in separate function calls helps people understand and write cleaner code.
+* **Clarification:** Exactly. Splitting state/physics (`update()`) from rendering (`draw()`) decouples logic from visuals—mirroring standard game engines and animation loops.
+
+---
+
+### 3. Data Structures: Why Store Particles in Arrays?
+
+#### Developer Question
+
+```javascript
+function init() {
+  for (let i = 0; i < 100; i++) {
+    /* Inside the for loop, need a data structure to hold particle objects */
+    particlesArray.push(new Particle());
+  }
+}
+
+```
+
+*Why store particles in an array instead of separate variables?*
+
+#### 1. Avoiding Variable Bloat (The Roll Call Analogy)
+
+* **Without an Array:** Managing 100 particles requires 100 unique variable names (`particle1`, `particle2`, etc.) and 200 lines of manual function calls inside the animation loop.
+* **With an Array:** It acts like an egg carton or roll call. A single loop executes the exact same operations across every slot in 3 lines:
+```javascript
+for (let i = 0; i < particlesArray.length; i++) {
+  particlesArray[i].update();
+  particlesArray[i].draw();
+}
+
+```
+
+
+
+#### 2. Memory Structure Comparison
+
+**Loose Variables (Manual & Fixed):**
+
+```text
+RAM (Memory)
++---------------+---------------+---------------+
+|  particle1    |  particle2    |  particle3    | ... up to particle100
+|  { x, y... }  |  { x, y... }  |  { x, y... }  |
++---------------+---------------+---------------+
+
+```
+
+**Array Structure (Single Indexed Reference):**
+
+```text
+                  particlesArray
+                 +---------------+
+                 |  Length: 100  |
+                 +---------------+
+                         |
+       +-----------------+-----------------+-----------------+
+       | [0]             | [1]             | [2]             | ... [99]
+       v                 v                 v                 v
++---------------+ +---------------+ +---------------+ +---------------+
+|   Particle    | |   Particle    | |   Particle    | |   Particle    |
+|   Object      | |   Object      | |   Object      | |   Object      |
+| - x: 142      | | - x: 89       | | - x: 310      | | - x: 45       |
+| - y: 55       | | - y: 204      | | - y: 12       | | - y: 400      |
+| - speedX: 1.2 | | - speedX:-0.5 | | - speedX: 2.1 | | - speedX:-1.8 |
+| - speedY:-0.8 | | - speedY: 1.1 | | - speedY: 0.4 | | - speedY:-0.2 |
++---------------+ +---------------+ +---------------+ +---------------+
+
+```
+
+#### 3. Dynamic Lifecycles (Spawning & Pruning)
+
+Particle counts change continuously at runtime:
+
+* **Spawning:** Inject new particles on mouse move or triggers using `.push()`:
+```text
+[ Particle 0 ] -> [ Particle 1 ]  +  .push()  =>  [ Particle 0 ] -> [ Particle 1 ] -> [ Particle 2 ]
+
+```
+
+
+* **Pruning:** Remove dead particles (shrunk or off-screen) using `.splice(i, 1)`:
+```text
+[ Particle 0 ] -> [ Particle 1 (DEAD) ] -> [ Particle 2 ]
+                         |
+                   .splice(1, 1)
+                         v
+[ Particle 0 ] --------------------------> [ Particle 1 ] (re-indexed)
+
+```
+
+
+
+```
+
+```

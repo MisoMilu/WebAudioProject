@@ -164,7 +164,8 @@ function init(){
   for(let i = 0; i<100;i++){  
     /*Inside the for loop, need a data structure to
     hold particle objects*/
-    particlesArray.push(new Particle())
+    particlesArray.push(new Particle()) // new will trigger its constructor method.
+     
   }
 }
 
