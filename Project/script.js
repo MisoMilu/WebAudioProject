@@ -31,13 +31,16 @@ window.addEventListener('resize', function(){
   ctx.fillStyle = 'white'
   ctx.fillRect(10,20,150,50);
   // Draw a circle
-  ctx.fillStyle = 'red'
+  ctx.fillStyle = 'blue'
   /*For lines, you not only need to 
-speficy values first, you need to first all beginPath() as well*/
+  speficy values first, you need to first all beginPath() as well*/
+  ctx.strokeStyle = 'blue'
+  ctx.lineWidth = 10;
   ctx.beginPath();
   // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
   ctx.arc(150,200,50,0,Math.PI * 2)// coordinates (100,100) is the central point
-  ctx.fill();
+  //ctx.fill();
+  ctx.stroke();
 
   
 })
@@ -51,11 +54,15 @@ ctx.fillStyle = 'white'
 ctx.fillRect(10,20,150,50);// coordinates (10,20) is the upper left starting point
 
 // Draw a circle
-ctx.fillStyle = 'red'
-ctx.strokeStyle - 'red'
+ctx.fillStyle = 'blue'
+ctx.strokeStyle = 'blue'
 /*For lines, you not only need to 
 speficy values first, you need to first all beginPath() as well*/
+ctx.lineWidth = 10;
 ctx.beginPath();
 // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-ctx.arc(150,200,50,0,Math.PI * 2)// coordinates (100,100) is the central point
-ctx.fill();
+ctx.arc(150,100,40,0,Math.PI * 2)// coordinates (100,100) is the central point
+//ctx.fill();
+ctx.stroke(); // stroke() is for not filled circle
+// check again in console. all these are stored in the ctx variable
+console.log(ctx);
