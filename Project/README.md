@@ -215,3 +215,20 @@ mouse.y = event.y;
 ```
 
 The parameter can technically have any name, but `event` is the normal, clear name.
+
+### Checking the event object
+
+```js
+// Check the event object JavaScript receives after a click.
+console.log(event);
+```
+
+You do not have to name the callback parameter `event`; any variable name works. The browser calls the callback function on the event listener and passes in the built-in event object that it created when the user clicked.
+
+```js
+canvas.addEventListener('click', function (clickInfo) {
+  console.log(clickInfo);
+});
+```
+
+In this example, `clickInfo` refers to the same click-event object that was called `event` in the earlier example.

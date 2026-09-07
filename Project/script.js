@@ -50,7 +50,7 @@ pass in. and after that the function() will automaiclaly
 get called too*/
 
 
-
+// Custom mouse object. its a global object
 const mouse = {
   x: null, // Inittially, the mouse will contain x and y  properties
   y: null,
@@ -68,6 +68,21 @@ canvas.addEventListener('click', function(event){
   event that just occured. such as x, y cooridinates of the click and more */
   mouse.x = event.x;
   mouse.y = event.y;
+
+  /*since mouse is a global object, 
+  now the information stored in the event
+  object is globally avaliable! 
+  */
+
+   // Now check if the event is created in Javascript
+  console.log(event);
+  /*you dont have to name it 
+  'event'. any variable name works
+   cuz javascript knows argument passed to a
+  call back function(event) on event listener
+  refers the the built-in event object that 
+  browswer just created when the user clicks
+   */
 
 })
 
