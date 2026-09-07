@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d') // Hey, give me tools to draw 2D things on C
 //3. Chek if Javascripts has succesfully found canvas. -> need to go to browswer and inspect, then hit console 
 // to see that java prints out the value in the console
 //3.5 Prints the 2D drawing tools (ctx) to the Console, so you can confirm they were created.
-//console.log(ctx);
+console.log(ctx);
 
 
 
@@ -25,6 +25,11 @@ window.addEventListener('resize', function(){
   // so rect dont distort when we change size of window
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
+  
+  // draw again because canvas.width and canvas.height clears the entire canvas
+  //resizing the canvas like replacing it with a fresh blank drawing surface.
+  ctx.fillStyle = 'white'
+  ctx.fillRect(10,20,150,50);
 })
 /* addEventListenso the event is automatically created when the user 
 resize window, it automatically gets created and 
@@ -34,3 +39,5 @@ get called too*/
 // try to draw using ctx and see if it appears on the screen
 ctx.fillStyle = 'white'
 ctx.fillRect(10,20,150,50);
+
+
