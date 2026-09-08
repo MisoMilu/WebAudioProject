@@ -666,7 +666,6 @@ Particle counts change continuously at runtime:
 
 #### The Execution Timeline Breakdown
 
-```text
 1. Page Loads:
    Script executes synchronously top-to-bottom in milliseconds.
    mouse initialized: { x: undefined, y: undefined }
@@ -692,7 +691,21 @@ Particle counts change continuously at runtime:
 * **Mouse Trail Effect (Dynamic Spawning):** Do not generate particles inside `init()`. Instead, run `.push(new Particle())` directly inside the `mousemove` event listener so each particle reads the updated coordinates at birth.
 * **Ambient Floating Field (Pre-Spawned):** If pre-generating in `init()`, initialize coordinates using canvas dimensions (`Math.random() * canvas.width`) rather than the mouse object.
 
-````markdown
+
+# Explain `animate()`, `update()`, and `draw()` Timing Sequence and How It Works
+
+When making animations with Canvas, the typical game loop looks like this:
+
+```javascript
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    update();
+    draw();
+
+    requestAnimationFrame(animate);
+}
+```
 # Explain `animate()`, `update()`, and `draw()` Timing Sequence and How It Works
 
 When making animations with Canvas, the typical game loop looks like this:
@@ -708,6 +721,7 @@ function animate() {
 }
 ```
 
+---
 ---
 
 # What Each Function Does
