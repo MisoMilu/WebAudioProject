@@ -28,20 +28,6 @@ window.addEventListener('resize', function(){
   canvas.height = window.innerHeight
   // draw again because canvas.width and canvas.height clears the entire canvas
   //resizing the canvas like replacing it with a fresh blank drawing surface.
-  ctx.fillStyle = 'white'
-  ctx.fillRect(10,20,150,50);
-  // Draw a circle
-  ctx.fillStyle = 'blue'
-  /*For lines, you not only need to 
-  speficy values first, you need to first all beginPath() as well*/
-  ctx.strokeStyle = 'blue'
-  ctx.lineWidth = 10;
-  ctx.beginPath();
-  // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-  ctx.arc(150,200,50,0,Math.PI * 2)// coordinates (100,100) is the central point
-  //ctx.fill();
-  ctx.stroke();
-
   
 })
 /* addEventListensor the event is automatically created when the user 
@@ -68,6 +54,11 @@ canvas.addEventListener('click', function(event){
   event that just occured. such as x, y cooridinates of the click and more */
   mouse.x = event.x;
   mouse.y = event.y;
+  //everytim clickevent is triggered, add a new particle in the array
+  // use for-loop to add more particles
+  //for (let i =0; i < 10; i++){
+  //    particlesArray.push(new Particle());
+  //}
   //drawCircle(); 
 
   /*since mouse is a global object, 
@@ -93,6 +84,9 @@ canvas.addEventListener('mousemove',function(event){
   mouse.y = event.y
   //drawCircle(); // drawCircle is being called over and over again 
   //console.log(event); // omg so much haha 
+   for (let i =0; i < 4; i++){
+      particlesArray.push(new Particle());
+  }
 })
 
 // What if we want to draw multiple circles
@@ -130,15 +124,12 @@ console.log(ctx);
 class Particle{
   // mandatory constructor method
   constructor(){
-     /*The properties of Particle are (x,y), size and speed */
-    /*this.x = mouse.x;
-    this.y = mouse.y; -> dont use mouse. 
-    because mouse is too slow to
-     detect values before calling init
-     Instead, do this.x = Math.random() to immideiately assigning value before init()-> create the Particles*/ 
-    this.x = Math.random()* canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random()*10 + 1 // one to almost 10. [1, 10)
+    //1. use mouse because we are creating particles that follows mouse now
+    this.x = mouse.x;
+    this.y = mouse.y;
+    //this.x = Math.random()* canvas.width;
+   // this.y = Math.random() * canvas.height;
+    this.size = Math.random()*5 + 1 // one to almost 10. [1, 6)
     // particles should be able to move left and right
     this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
     // particles should be able to move down and up
@@ -152,11 +143,11 @@ class Particle{
     this.y = this.y + this.speedY;// UP: negative, Down: positive
 
     // what if you want the particles to shrink? (anything you want to change overtime, you can put in update())
-    if (this.size > 0.2) this.size -= 0.07;
+    if (this.size > 0.2) this.size -= 0.08;
   }
   draw(){ /*Custom method: Its job is to takes values 
     of constructor and pass it to the arc() method */
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = 'white';
     //ctx.beginPath();
     //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
     ctx.beginPath();
@@ -165,29 +156,17 @@ class Particle{
   }
 }
 
-/*Make a custom function that makes the Particle 
-a lot of times [0-99] == 100 distint values
-Hint: use the new keyword
-This word will run 100 times with 100 randomized particle objects*/
-function init(){
-  for(let i = 0; i<100;i++){  
-    /*Inside the for loop, need a data structure to
-    hold particle objects*/
-    particlesArray.push(new Particle()) // new will trigger its constructor method.
-  }
-}
-// check the particle object
-init();
-console.log(particlesArray);
+// init(); we dont need init() function now.
+//  thats just for when you want particles to appear automatically
+
 
 function handleParticles(){
   /*Drawing all particles. 0. Get initial value 
-  1. draw it 2. wipe it 3. update new value
-  Again. 1. draw the updated value. 2. wipe it 3. update new value*/ 
+  1. draw it 2. wipe it 3. update new value*/
   for (let i = 0; i < particlesArray.length; i++){
     particlesArray[i].update();
     particlesArray[i].draw(); 
-    if (particlesArray[i].size <= 0.3){ // if an element at its current index is size is < 0.3
+    if (particlesArray[i].size <= 0.2){ // if an element at its current index is size is < 0.3
         particlesArray.splice(i,1); // remove the particle 
         // you can check of array size shrink as particle size shrink
         console.log(particlesArray.length);
@@ -197,8 +176,11 @@ function handleParticles(){
 }
 //custom function  will be called over and over creating a function loop
 function animate(){
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
+  //ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
   //drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
+  // instead of clearing the entire canvas, draw semi-transparent canvas
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(0,0,canvas.width, canvas.height);
   handleParticles();
   // BUilt-in function : it just calls function as we pass it as an argument
   // this function is just for repetition
