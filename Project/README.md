@@ -1201,3 +1201,294 @@ show x = 115
 
 **Key takeaway:** The user never sees `x = 100`. The first visible frame is already the updated value, and `requestAnimationFrame()` prevents `animate()` from immediately wiping out what `draw()` just drew. It gives the drawing time to stay visible before the next frame begins.
 ````
+---
+
+# How Does The Animation Stop?
+
+A common question:
+
+> wouldn't that mean `animate()` will happen infinitely? If you call `animate()` once, it will call itself over and over.
+
+Yes!
+
+That's actually the whole point of an animation loop.
+
+When you call:
+
+```javascript
+animate();
+```
+
+once, here's what happens:
+
+```javascript
+function animate() {
+    update();
+    draw();
+
+    requestAnimationFrame(animate);
+}
+```
+
+### First Call
+
+```text
+animate()
+↓
+update()
+↓
+draw()
+↓
+requestAnimationFrame(animate)
+↓
+animate() ends
+```
+
+---
+
+### A Little Later...
+
+The browser sees:
+
+```javascript
+requestAnimationFrame(animate);
+```
+
+and says:
+
+```text
+"Okay, I'll call animate() again later."
+```
+
+So it starts a brand new call:
+
+```text
+animate()
+↓
+update()
+↓
+draw()
+↓
+requestAnimationFrame(animate)
+↓
+animate() ends
+```
+
+---
+
+### Then Again...
+
+```text
+animate()
+↓
+update()
+↓
+draw()
+↓
+requestAnimationFrame(animate)
+↓
+animate() ends
+```
+
+---
+
+This creates:
+
+```text
+animate()
+↓
+requestAnimationFrame(animate)
+↓
+animate()
+↓
+requestAnimationFrame(animate)
+↓
+animate()
+↓
+requestAnimationFrame(animate)
+↓
+animate()
+↓
+...
+```
+
+So yes, it keeps going forever.
+
+---
+
+## Important Difference
+
+This is **NOT**:
+
+```javascript
+function animate() {
+    animate(); // BAD
+}
+```
+
+which would do:
+
+```text
+animate()
+  animate()
+    animate()
+      animate()
+        animate()
+```
+
+all immediately and crash the program.
+
+Instead, `requestAnimationFrame()` acts like:
+
+```text
+animate()
+↓
+"I'm done."
+↓
+wait a few seconds
+↓
+browser starts a NEW animate() call
+```
+
+Think of it as:
+
+```text
+Frame 1:
+animate()
+ends
+
+(wait)
+
+Frame 2:
+animate()
+ends
+
+(wait)
+
+Frame 3:
+animate()
+ends
+```
+
+Each call finishes before the next one starts.
+
+---
+
+## How Do You Stop The Animation?
+
+Usually with a condition.
+
+Example:
+
+```javascript
+let gameOver = false;
+
+function animate() {
+
+    if (gameOver) {
+        return;
+    }
+
+    update();
+    draw();
+
+    requestAnimationFrame(animate);
+}
+```
+
+When:
+
+```javascript
+gameOver = true;
+```
+
+the next time `animate()` runs:
+
+```text
+animate()
+↓
+if(gameOver)
+↓
+return
+```
+
+and it never reaches:
+
+```javascript
+requestAnimationFrame(animate);
+```
+
+So no new frame gets scheduled.
+
+Animation stops.
+
+---
+
+## Real Game Example
+
+Imagine Mario dies:
+
+```javascript
+if (player.health <= 0) {
+    gameOver = true;
+}
+```
+
+Timeline:
+
+```text
+Frame 120:
+animate()
+requestAnimationFrame()
+
+Frame 121:
+animate()
+requestAnimationFrame()
+
+Frame 122:
+Mario dies
+gameOver = true
+
+Frame 123:
+animate()
+return
+
+(no requestAnimationFrame)
+```
+
+Animation ends.
+
+---
+
+## Mental Model
+
+```text
+You only call animate() once.
+
+requestAnimationFrame() is what keeps the animation alive.
+```
+
+So:
+
+```javascript
+animate(); // start engine
+```
+
+is like turning on a car.
+
+After that:
+
+```javascript
+requestAnimationFrame(animate);
+```
+
+keeps the engine running frame after frame.
+
+Without it, you would only get:
+
+```text
+update()
+draw()
+```
+
+one time and the animation would stop immediately.

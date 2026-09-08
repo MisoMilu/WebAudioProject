@@ -182,15 +182,15 @@ function handleParticles(){
   1. draw it 2. wipe it 3. update new value
   Again. 1. draw the updated value. 2. wipe it 3. update new value*/ 
   for (let i = 0; i < particlesArray.length; i++){
-    particlesArray[i].draw(); 
-    animate();
     particlesArray[i].update();
+    particlesArray[i].draw(); 
   }
 }
 //custom function  will be called over and over creating a function loop
 function animate(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
   //drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
+  handleParticles();
   // BUilt-in function : it just calls function as we pass it as an argument
   // this function is just for repetition
   requestAnimationFrame(animate);
