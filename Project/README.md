@@ -1201,25 +1201,15 @@ show x = 115
 
 **Key takeaway:** The user never sees `x = 100`. The first visible frame is already the updated value, and `requestAnimationFrame()` prevents `animate()` from immediately wiping out what `draw()` just drew. It gives the drawing time to stay visible before the next frame begins.
 ````
----
-
-# How Does The Animation Stop?
 
 A common question:
 
-> wouldn't that mean `animate()` will happen infinitely? If you call `animate()` once, it will call itself over and over.
+> wouldn't that mean animate() will happen infinitely?
 
-Yes!
 
-That's actually the whole point of an animation loop.
+## Animation Loop Lifecycle
 
-When you call:
-
-```javascript
-animate();
-```
-
-once, here's what happens:
+The animation loop continues running because each call to `animate()` schedules the next call using `requestAnimationFrame()`.
 
 ```javascript
 function animate() {
@@ -1230,37 +1220,13 @@ function animate() {
 }
 ```
 
-### First Call
-
-```text
-animate()
-↓
-update()
-↓
-draw()
-↓
-requestAnimationFrame(animate)
-↓
-animate() ends
-```
-
----
-
-### A Little Later...
-
-The browser sees:
+When the animation starts:
 
 ```javascript
-requestAnimationFrame(animate);
+animate();
 ```
 
-and says:
-
-```text
-"Okay, I'll call animate() again later."
-```
-
-So it starts a brand new call:
+the sequence becomes:
 
 ```text
 animate()
@@ -1272,13 +1238,9 @@ draw()
 requestAnimationFrame(animate)
 ↓
 animate() ends
-```
 
----
+(wait)
 
-### Then Again...
-
-```text
 animate()
 ↓
 update()
@@ -1290,95 +1252,39 @@ requestAnimationFrame(animate)
 animate() ends
 ```
 
----
+This process repeats continuously, creating the animation loop.
 
-This creates:
+### Why Doesn't This Cause Infinite Recursion?
 
-```text
-animate()
-↓
-requestAnimationFrame(animate)
-↓
-animate()
-↓
-requestAnimationFrame(animate)
-↓
-animate()
-↓
-requestAnimationFrame(animate)
-↓
-animate()
-↓
-...
-```
-
-So yes, it keeps going forever.
-
----
-
-## Important Difference
-
-This is **NOT**:
+The loop does **not** work like this:
 
 ```javascript
 function animate() {
-    animate(); // BAD
+    animate();
 }
 ```
 
-which would do:
+which would immediately call itself over and over until the program crashes.
 
-```text
-animate()
-  animate()
-    animate()
-      animate()
-        animate()
-```
-
-all immediately and crash the program.
-
-Instead, `requestAnimationFrame()` acts like:
+Instead, `requestAnimationFrame()` tells the browser to start a **new** `animate()` call later.
 
 ```text
 animate()
 ↓
-"I'm done."
+requestAnimationFrame(animate)
+↓
+animate() ends
 ↓
 wait a few seconds
 ↓
-browser starts a NEW animate() call
+browser starts a new animate() call
 ```
 
-Think of it as:
+Each execution finishes before the next one begins.
 
-```text
-Frame 1:
-animate()
-ends
+### Stopping The Animation
 
-(wait)
-
-Frame 2:
-animate()
-ends
-
-(wait)
-
-Frame 3:
-animate()
-ends
-```
-
-Each call finishes before the next one starts.
-
----
-
-## How Do You Stop The Animation?
-
-Usually with a condition.
-
-Example:
+The animation stops when a new frame is no longer scheduled.
 
 ```javascript
 let gameOver = false;
@@ -1402,93 +1308,44 @@ When:
 gameOver = true;
 ```
 
-the next time `animate()` runs:
-
-```text
-animate()
-↓
-if(gameOver)
-↓
-return
-```
-
-and it never reaches:
+the next call to `animate()` exits before reaching:
 
 ```javascript
 requestAnimationFrame(animate);
 ```
 
-So no new frame gets scheduled.
+Because no new frame is scheduled, the animation loop stops.
 
-Animation stops.
-
----
-
-## Real Game Example
-
-Imagine Mario dies:
-
-```javascript
-if (player.health <= 0) {
-    gameOver = true;
-}
-```
-
-Timeline:
+### Mental Model
 
 ```text
-Frame 120:
 animate()
-requestAnimationFrame()
-
-Frame 121:
-animate()
-requestAnimationFrame()
-
-Frame 122:
-Mario dies
-gameOver = true
-
-Frame 123:
-animate()
-return
-
-(no requestAnimationFrame)
-```
-
-Animation ends.
-
----
-
-## Mental Model
-
-```text
-You only call animate() once.
-
-requestAnimationFrame() is what keeps the animation alive.
-```
-
-So:
-
-```javascript
-animate(); // start engine
-```
-
-is like turning on a car.
-
-After that:
-
-```javascript
-requestAnimationFrame(animate);
-```
-
-keeps the engine running frame after frame.
-
-Without it, you would only get:
-
-```text
+↓
 update()
+↓
 draw()
+↓
+requestAnimationFrame()
+↓
+wait a few seconds
+↓
+animate()
+↓
+update()
+↓
+draw()
+↓
+requestAnimationFrame()
+↓
+wait a few seconds
+↓
+repeat
 ```
 
-one time and the animation would stop immediately.
+`animate()` is only called manually once.
+
+```javascript
+animate();
+```
+
+After that, `requestAnimationFrame()` keeps the animation running by scheduling the next frame.
