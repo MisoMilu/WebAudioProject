@@ -157,7 +157,7 @@ class Particle{
     //ctx.beginPath();
     //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
     ctx.beginPath();
-    ctx.arc(this.x, this,y, 50,0, Math.PI*2);// fills rectangle based on mouse movement already 
+    ctx.arc(this.x, this.y, 50,0, Math.PI*2);// fills rectangle based on mouse movement already 
     ctx.fill();
   }
 }
