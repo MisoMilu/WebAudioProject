@@ -138,7 +138,7 @@ class Particle{
      Instead, do this.x = Math.random() to immideiately assigning value before init()-> create the Particles*/ 
     this.x = Math.random()* canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random()*5 + 1 // one to almost 6. [1, 6)
+    this.size = Math.random()*10 + 1 // one to almost 10. [1, 10)
     // particles should be able to move left and right
     this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
     // particles should be able to move down and up
@@ -150,6 +150,9 @@ class Particle{
     //Custom method it will change x and y coordinates based on speedX and speedY values
     this.x = this.x+ this.speedX; // negative numbers will make particles move to the left. 
     this.y = this.y + this.speedY;// UP: negative, Down: positive
+
+    // what if you want the particles to shrink? (anything you want to change overtime, you can put in update())
+    if (this.size > 0.2) this.size -= 0.07;
   }
   draw(){ /*Custom method: Its job is to takes values 
     of constructor and pass it to the arc() method */
@@ -184,6 +187,10 @@ function handleParticles(){
   for (let i = 0; i < particlesArray.length; i++){
     particlesArray[i].update();
     particlesArray[i].draw(); 
+    if (particlesArray[i] < 0.3){ // if an element at its current index is size  < 0.3
+        particlesArray.splice(i,1); // remove the particle 
+        i--; // the array size changed, and the next element's index becomes 1 smaller
+    } 
   }
 }
 //custom function  will be called over and over creating a function loop
