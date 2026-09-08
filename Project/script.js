@@ -131,8 +131,13 @@ class Particle{
   // mandatory constructor method
   constructor(){
      /*The properties of Particle are (x,y), size and speed */
-    this.x = mouse.x;
-    this.y = mouse.y;
+    /*this.x = mouse.x;
+    this.y = mouse.y; -> dont use mouse. 
+    because mouse is too slow to
+     detect values before calling init
+     Instead, do this.x = Math.random() to immideiately assigning value before init()-> create the Particles*/ 
+    this.x = Math.random()* canvas.width;
+    this.y = Math.random() * canvas.height;
     this.size = Math.random()*5 + 1 // one to almost 6. [1, 6)
     // particles should be able to move left and right
     this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
@@ -166,15 +171,22 @@ function init(){
     /*Inside the for loop, need a data structure to
     hold particle objects*/
     particlesArray.push(new Particle()) // new will trigger its constructor method.
-    
   }
 }
 // check the particle object
 init();
 console.log(particlesArray);
 
-
-
+function handleParticles(){
+  /*Drawing all particles. 0. Get initial value 
+  1. draw it 2. wipe it 3. update new value
+  Again. 1. draw the updated value. 2. wipe it 3. update new value*/ 
+  for (let i = 0; i < particlesArray.length; i++){
+    particlesArray[i].draw(); 
+    animate();
+    particlesArray[i].update();
+  }
+}
 //custom function  will be called over and over creating a function loop
 function animate(){
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
