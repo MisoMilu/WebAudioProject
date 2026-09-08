@@ -655,12 +655,6 @@ Particle counts change continuously at runtime:
 
 ```
 
-
-
-```
-
-```
-```markdown
 ### 4. Lifecycle Timing: Why `mouse.x` & `mouse.y` Remain `undefined`
 
 #### Developer Question
@@ -687,7 +681,6 @@ Particle counts change continuously at runtime:
    mousemove fires: mouse.x = event.x, mouse.y = event.y
    Existing particles do NOT update because values are copied, not linked.
 
-```
 
 #### Key Mechanics: Pass-by-Value vs. Live Links
 
@@ -698,7 +691,3 @@ Particle counts change continuously at runtime:
 
 * **Mouse Trail Effect (Dynamic Spawning):** Do not generate particles inside `init()`. Instead, run `.push(new Particle())` directly inside the `mousemove` event listener so each particle reads the updated coordinates at birth.
 * **Ambient Floating Field (Pre-Spawned):** If pre-generating in `init()`, initialize coordinates using canvas dimensions (`Math.random() * canvas.width`) rather than the mouse object.
-
-```
-
-```
