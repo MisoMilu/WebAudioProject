@@ -17,7 +17,7 @@ console.log(ctx);
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const particlesArray =[];
-let hue = 0; //let declares a variable whose value can be reassigned later.
+let hue = 0; //use the 'let' keyword because hue's value will change overtime
 // THis means: “Listen for an event happening in the browser window.”
 //It needs:
 //1. The event name, such as 'resize'
@@ -179,10 +179,11 @@ function handleParticles(){
 function animate(){
   //ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
   //drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
-  // instead of clearing the entire canvas, draw semi-transparent canvas
+  // instead of clearing the entire canvas, draw semi-transparent black canvas
   ctx.fillStyle = 'rgba(0, 0, 0, 0.11)';
   ctx.fillRect(0,0,canvas.width, canvas.height);
   handleParticles();
+  hue++; // increase hue value by one in every step
   // BUilt-in function : it just calls function as we pass it as an argument
   // this function is just for repetition
   requestAnimationFrame(animate);

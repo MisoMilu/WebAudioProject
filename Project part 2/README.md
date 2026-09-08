@@ -1363,3 +1363,115 @@ Introduced in ECMAScript 2015 (ES6), **`let`** declares a reassignable, block-sc
 ```javascript
 let hue = 0;
 hue = hue + 1; // Valid: hue is now 1
+
+# Declaring Colors in Web & Canvas
+
+A reference guide for the four main ways to define colors in CSS and HTML5 Canvas.
+
+---
+
+## 1. Named Colors (Color Keywords)
+
+Predefined English names recognized directly by modern browsers without numeric values.
+
+### Syntax
+javascript
+ctx.fillStyle = 'red';
+ctx.fillStyle = 'blue';
+ctx.fillStyle = 'transparent';
+
+// Standard 6-digit: #RRGGBB
+ctx.fillStyle = '#ff0000'; // Pure red
+ctx.fillStyle = '#00ff00'; // Pure green
+ctx.fillStyle = '#0000ff'; // Pure blue
+
+// Shorthand 3-digit: #RGB (doubles each character, e.g., #f0a -> #ff00aa)
+ctx.fillStyle = '#fff'; // White (#ffffff)
+ctx.fillStyle = '#000'; // Black (#000000)
+
+// 8-digit with Alpha: #RRGGBBAA
+ctx.fillStyle = '#00000080'; // Black with 50% opacity (80 in hex = 128 / 255)
+
+// RGB: rgb(red, green, blue)
+ctx.fillStyle = 'rgb(255, 0, 0)';     // Pure red
+ctx.fillStyle = 'rgb(0, 0, 0)';       // Black
+ctx.fillStyle = 'rgb(255, 255, 255)'; // White
+
+// RGBA: rgba(red, green, blue, alpha)
+// Alpha ranges from 0.0 (completely transparent) to 1.0 (completely solid)
+ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';       // 50% semi-transparent black
+ctx.fillStyle = 'rgba(255, 105, 180, 0.2)'; // 20% transparent hot pink
+
+// HSL: hsl(hue, saturation%, lightness%)
+ctx.fillStyle = 'hsl(0, 100%, 50%)';   // Pure red
+ctx.fillStyle = 'hsl(120, 100%, 50%)'; // Pure green
+ctx.fillStyle = 'hsl(240, 100%, 50%)'; // Pure blue
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Conic gradient for Hue wheel -->
+    <radialGradient id="saturationMask">
+      <stop offset="0%" stop-color="#808080" stop-opacity="1" />
+      <stop offset="100%" stop-color="#808080" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="500" fill="#1e1e24" rx="16" />
+
+  <g transform="translate(250, 240)">
+    <!-- Hue Segments -->
+    <!-- 24 sectors around 360 degrees -->
+    <path d="M 0 0 L 0 -160 A 160 160 0 0 1 41.41 -154.55 Z" fill="hsl(0, 100%, 50%)" />
+    <path d="M 0 0 L 41.41 -154.55 A 160 160 0 0 1 80 -138.56 Z" fill="hsl(15, 100%, 50%)" />
+    <path d="M 0 0 L 80 -138.56 A 160 160 0 0 1 113.14 -113.14 Z" fill="hsl(30, 100%, 50%)" />
+    <path d="M 0 0 L 113.14 -113.14 A 160 160 0 0 1 138.56 -80 Z" fill="hsl(45, 100%, 50%)" />
+    <path d="M 0 0 L 138.56 -80 A 160 160 0 0 1 154.55 -41.41 Z" fill="hsl(60, 100%, 50%)" />
+    <path d="M 0 0 L 154.55 -41.41 A 160 160 0 0 1 160 0 Z" fill="hsl(75, 100%, 50%)" />
+    <path d="M 0 0 L 160 0 A 160 160 0 0 1 154.55 41.41 Z" fill="hsl(90, 100%, 50%)" />
+    <path d="M 0 0 L 154.55 41.41 A 160 160 0 0 1 138.56 80 Z" fill="hsl(105, 100%, 50%)" />
+    <path d="M 0 0 L 138.56 80 A 160 160 0 0 1 113.14 113.14 Z" fill="hsl(120, 100%, 50%)" />
+    <path d="M 0 0 L 113.14 113.14 A 160 160 0 0 1 80 138.56 Z" fill="hsl(135, 100%, 50%)" />
+    <path d="M 0 0 L 80 138.56 A 160 160 0 0 1 41.41 154.55 Z" fill="hsl(150, 100%, 50%)" />
+    <path d="M 0 0 L 41.41 154.55 A 160 160 0 0 1 0 160 Z" fill="hsl(165, 100%, 50%)" />
+    <path d="M 0 0 L 0 160 A 160 160 0 0 1 -41.41 154.55 Z" fill="hsl(180, 100%, 50%)" />
+    <path d="M 0 0 L -41.41 154.55 A 160 160 0 0 1 -80 138.56 Z" fill="hsl(195, 100%, 50%)" />
+    <path d="M 0 0 L -80 138.56 A 160 160 0 0 1 -113.14 113.14 Z" fill="hsl(210, 100%, 50%)" />
+    <path d="M 0 0 L -113.14 113.14 A 160 160 0 0 1 -138.56 80 Z" fill="hsl(225, 100%, 50%)" />
+    <path d="M 0 0 L -138.56 80 A 160 160 0 0 1 -154.55 41.41 Z" fill="hsl(240, 100%, 50%)" />
+    <path d="M 0 0 L -154.55 41.41 A 160 160 0 0 1 -160 0 Z" fill="hsl(255, 100%, 50%)" />
+    <path d="M 0 0 L -160 0 A 160 160 0 0 1 -154.55 -41.41 Z" fill="hsl(270, 100%, 50%)" />
+    <path d="M 0 0 L -154.55 -41.41 A 160 160 0 0 1 -138.56 -80 Z" fill="hsl(285, 100%, 50%)" />
+    <path d="M 0 0 L -138.56 -80 A 160 160 0 0 1 -113.14 -113.14 Z" fill="hsl(300, 100%, 50%)" />
+    <path d="M 0 0 L -113.14 -113.14 A 160 160 0 0 1 -80 -138.56 Z" fill="hsl(315, 100%, 50%)" />
+    <path d="M 0 0 L -80 -138.56 A 160 160 0 0 1 -41.41 -154.55 Z" fill="hsl(330, 100%, 50%)" />
+    <path d="M 0 0 L -41.41 -154.55 A 160 160 0 0 1 0 -160 Z" fill="hsl(345, 100%, 50%)" />
+
+    <!-- Saturation Desaturation Center Overlay -->
+    <circle cx="0" cy="0" r="160" fill="url(#saturationMask)" />
+
+    <!-- Center Hub -->
+    <circle cx="0" cy="0" r="30" fill="#808080" stroke="#ffffff" stroke-width="2" />
+    <text x="0" y="5" font-size="11" fill="#ffffff" text-anchor="middle" font-family="sans-serif" font-weight="bold">Sat: 0%</text>
+
+    <!-- Labels around the wheel -->
+    <!-- 0° Red -->
+    <text x="0" y="-175" font-size="13" fill="#ff4d4d" text-anchor="middle" font-family="sans-serif" font-weight="bold">0° / 360° Red</text>
+    <!-- 60° Yellow -->
+    <text x="160" y="-85" font-size="13" fill="#ffdb4d" text-anchor="start" font-family="sans-serif" font-weight="bold">60° Yellow</text>
+    <!-- 120° Green -->
+    <text x="160" y="90" font-size="13" fill="#4dff4d" text-anchor="start" font-family="sans-serif" font-weight="bold">120° Green</text>
+    <!-- 180° Cyan -->
+    <text x="0" y="195" font-size="13" fill="#4dffff" text-anchor="middle" font-family="sans-serif" font-weight="bold">180° Cyan</text>
+    <!-- 240° Blue -->
+    <text x="-160" y="90" font-size="13" fill="#4d88ff" text-anchor="end" font-family="sans-serif" font-weight="bold">240° Blue</text>
+    <!-- 300° Magenta -->
+    <text x="-160" y="-85" font-size="13" fill="#ff4dff" text-anchor="end" font-family="sans-serif" font-weight="bold">300° Magenta</text>
+  </g>
+
+  <!-- Title / Legend Footer -->
+  <text x="250" y="455" font-size="14" fill="#e0e0e0" text-anchor="middle" font-family="sans-serif">HSL Color Wheel (Saturation: center to outer edge)</text>
+</svg>
+
+
+// HSLA: hsla(hue, saturation%, lightness%, alpha)
+ctx.fillStyle = 'hsla(180, 100%, 50%, 0.5)'; // 50% transparent cyan
