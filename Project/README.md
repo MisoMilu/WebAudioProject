@@ -1200,7 +1200,7 @@ show x = 115
 ```
 
 **Key takeaway:** The user never sees `x = 100`. The first visible frame is already the updated value, and `requestAnimationFrame()` prevents `animate()` from immediately wiping out what `draw()` just drew. It gives the drawing time to stay visible before the next frame begins.
-````
+
 
 A common question:
 
