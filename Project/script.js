@@ -187,8 +187,10 @@ function handleParticles(){
   for (let i = 0; i < particlesArray.length; i++){
     particlesArray[i].update();
     particlesArray[i].draw(); 
-    if (particlesArray[i] < 0.3){ // if an element at its current index is size  < 0.3
+    if (particlesArray[i].size <= 0.3){ // if an element at its current index is size is < 0.3
         particlesArray.splice(i,1); // remove the particle 
+        // you can check of array size shrink as particle size shrink
+        console.log(particlesArray.length);
         i--; // the array size changed, and the next element's index becomes 1 smaller
     } 
   }
