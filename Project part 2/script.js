@@ -17,6 +17,7 @@ console.log(ctx);
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const particlesArray =[];
+let hue = 0; //let declares a variable whose value can be reassigned later.
 // THis means: “Listen for an event happening in the browser window.”
 //It needs:
 //1. The event name, such as 'resize'
@@ -102,22 +103,22 @@ function drawCircle(){
 }
 
 // try to draw using ctx and see if it appears on the screen
-ctx.fillStyle = 'white'
-ctx.fillRect(10,20,150,50);// coordinates (10,20) is the upper left starting point
+//ctx.fillStyle = 'white'
+//ctx.fillRect(10,20,150,50);// coordinates (10,20) is the upper left starting point
 
 // Draw a circle
-ctx.fillStyle = 'blue'
-ctx.strokeStyle = 'blue'
+//ctx.fillStyle = 'blue'
+//ctx.strokeStyle = 'blue'
 /*For lines, you not only need to 
 speficy values first, you need to first all beginPath() as well*/
-ctx.lineWidth = 10;
-ctx.beginPath();
+//ctx.lineWidth = 10;
+//ctx.beginPath();
 // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-ctx.arc(150,100,40,0,Math.PI * 2)// coordinates (150,100) is the central point
+//ctx.arc(150,100,40,0,Math.PI * 2)// coordinates (150,100) is the central point
 //ctx.fill();
-ctx.stroke(); // stroke() is for not filled circle
+//ctx.stroke(); // stroke() is for not filled circle
 // check again in console. all these are stored in the ctx variable
-console.log(ctx);
+//console.log(ctx);
 
 
 // Custom class - yay create own object in javascript!. To create particle system
@@ -179,7 +180,7 @@ function animate(){
   //ctx.clearRect(0, 0, canvas.width, canvas.height); // clear whats its currently on canvas
   //drawCircle(); // draw on current canvas. the (x,y)is moving. so everytime it makes a new location drawing, clearRect will delete the previous one
   // instead of clearing the entire canvas, draw semi-transparent canvas
-  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.11)';
   ctx.fillRect(0,0,canvas.width, canvas.height);
   handleParticles();
   // BUilt-in function : it just calls function as we pass it as an argument

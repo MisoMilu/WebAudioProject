@@ -1349,3 +1349,17 @@ animate();
 ```
 
 After that, `requestAnimationFrame()` keeps the animation running by scheduling the next frame.
+
+# JavaScript Fundamentals: The `let` Keyword
+
+A quick-reference guide explaining the `let` keyword in JavaScript, how it manages state and variable reassignment, and how it differs from `const` and `var`.
+
+---
+
+## What is `let`?
+
+Introduced in ECMAScript 2015 (ES6), **`let`** declares a reassignable, block-scoped local variable. It tells JavaScript to allocate memory for a variable whose value is expected to change over time.
+
+```javascript
+let hue = 0;
+hue = hue + 1; // Valid: hue is now 1
