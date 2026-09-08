@@ -1360,7 +1360,6 @@ A quick-reference guide explaining the `let` keyword in JavaScript, how it manag
 
 Introduced in ECMAScript 2015 (ES6), **`let`** declares a reassignable, block-scoped local variable. It tells JavaScript to allocate memory for a variable whose value is expected to change over time.
 
-```javascript
 let hue = 0;
 hue = hue + 1; // Valid: hue is now 1
 
