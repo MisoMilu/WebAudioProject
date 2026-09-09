@@ -167,24 +167,37 @@ function handleParticles(){
    // for every particle, cycle through every other particle. isnt that O(n^2) of time
     // here, j is a particle, and i is another particle
     for (let j = i; j < particlesArray.length; j++){
+      particlesArray[i].update();
+      particlesArray[i].draw(); 
       /* The goal here is to calculate the distance between two particles.
       use Pytagoream therom!! x^2 + x^y = c*/
       const dx = particlesArray[i].x - particlesArray[j].x; // change in x. particle i's x minus paritcle j's x
       const dy = particlesArray[i].y - particlesArray[j].x; // change in y. particle i's y minus paritcle j's y
       distance = Math.sqrt(dx*dx + dy*dy); // a^2 + b^2 = c^2 . The hypothnuse of the imaginary right traingle
     }
+    if (distance < 100){
+      // if you want to draw a line on canvas, start with beginPath()
+      ctx.beginPath();
+      /* moveTo() is a built in canvas method 
+      that specifies the starting point of the line*/
+      ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+      /*lineTo is also a built-in method that
+       speficies the ending point (the j particle!)of the line */
+       // so bascially, its trying to draw a line between 
+       // i particle, and a j particle. 
+      ctx.moveTo(particlesArray[i].j, particlesArray[i].j);
+      ctx.stroke(); // actually drawing out the line 
+    }
   }
-  /*Drawing all particles. 0. Get initial value 
-  1. draw it 2. wipe it 3. update new value*/
-  for (let i = 0; i < particlesArray.length; i++){
-    particlesArray[i].update();
-    particlesArray[i].draw(); 
-    if (particlesArray[i].size <= 0.2){ // if an element at its current index is size is < 0.3
-        particlesArray.splice(i,1); // remove the particle 
-        // you can check of array size shrink as particle size shrink
-        console.log(particlesArray.length);
-        i--; // the array size changed, and the next element's index becomes 1 smaller
-    } 
+  /*Drawing all particle's LINE*/
+
+      for (let i = 0; i < particlesArray.length; i++){
+        if (particlesArray[i].size <= 0.2){ // if an element at its current index is size is < 0.3
+            particlesArray.splice(i,1); // remove the particle 
+            // you can check of array size shrink as particle size shrink
+            console.log(particlesArray.length);
+            i--; // the array size changed, and the next element's index becomes 1 smaller
+        } 
    
 }
 //custom function  will be called over and over creating a function loop
