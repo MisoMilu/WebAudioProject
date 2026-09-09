@@ -135,6 +135,8 @@ class Particle{
     this.speedX = Math.random()*3 - 1.5 //[-1.5, 1.5)
     // particles should be able to move down and up
     this.speedY = Math.random()*3 - 1.5 //[-1.5, 1.5)
+    // add a color property so it can remember the color that its assigned to the individual object is created
+    this.color = 'hsl('+ hue +', 100%, 50%)';
   }
   // behavior will be defined as methods of this class. its functions of the object
   /*Now for methods*/
@@ -148,7 +150,7 @@ class Particle{
   }
   draw(){ /*Custom method: Its job is to takes values 
     of constructor and pass it to the arc() method */
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = this.color;
     //ctx.beginPath();
     //ctx.arc(mouse.x, mouse.y, 20,0,Math.PI*2);
     ctx.beginPath();

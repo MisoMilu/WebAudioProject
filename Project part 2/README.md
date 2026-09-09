@@ -1492,3 +1492,94 @@ ctx.fillStyle = 'hsla(180, 100%, 50%, 0.5)'; // 50% transparent cyan
 | **HEX** | `#RRGGBB` / `#RRGGBBAA` | `'#ff0055'` | CSS styles and design specs |
 | **RGB / RGBA** | `rgb(r, g, b)` / `rgba(r, g, b, a)` | `'rgba(0, 0, 0, 0.1)'` | Trail fading, exact byte values |
 | **HSL / HSLA** | `hsl(h, s%, l%)` / `hsla(h, s%, l%, a)` | `'hsl(200, 100%, 50%)'` | Procedural rainbow loops, color transitions |
+
+you pass colors as strings in Javascript
+---
+
+# JavaScript Basics: Color Strings and Concatenation
+
+## Question: “so the colors are bascially strings?”
+
+Yes—in these examples, you pass colors as **JavaScript strings**:
+
+```javascript
+ctx.fillStyle = 'red';
+ctx.fillStyle = '#ff0000';
+ctx.fillStyle = 'rgb(255, 0, 0)';
+ctx.fillStyle = 'hsl(0, 100%, 50%)';
+```
+
+The browser interprets each string as a color. All four examples above mean red.
+
+The quotes matter: `'red'` is a string, while `red` without quotes refers to a variable.
+
+```javascript
+let red = '#ff0000';
+ctx.fillStyle = red; // Uses the string stored in the variable.
+```
+
+`fillStyle` also accepts gradient and pattern objects, but the color declarations above use strings.
+
+## Question: “can you concatenate string with integers”
+
+Yes! **Concatenation** means joining strings together. When you use `+` between a string and a number, JavaScript converts the number to text and joins them.
+
+```javascript
+let hue = 120;
+
+ctx.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+// Result: 'hsl(120, 100%, 50%)'
+```
+
+This joins three parts:
+
+```text
+'hsl(' + 120 + ', 100%, 50%)'
+                ↓
+'hsl(120, 100%, 50%)'
+```
+
+You can also use a **template literal**, written with backticks and `${}`:
+
+```javascript
+ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+```
+
+`${hue}` inserts the value of `hue` into the string. Both approaches produce the same color string.
+
+## Question: “will that become a string is i add string + integer”
+
+Yes. **String + integer produces a string**:
+
+```javascript
+let result = 'hello' + 5;
+
+console.log(result);        // 'hello5'
+console.log(typeof result); // 'string'
+```
+
+JavaScript converts `5` to text for the concatenation. It does not change the original number variable:
+
+```javascript
+let number = 5;
+let result = 'hello' + number;
+
+console.log(typeof number); // 'number'
+console.log(typeof result); // 'string'
+```
+
+Adding numbers and joining strings behave differently:
+
+```javascript
+5 + 2;        // 7 (number)
+'5' + 2;      // '52' (string)
+'Color ' + 2; // 'Color 2' (string)
+```
+
+Operations with `+` are evaluated from left to right. Parentheses let you perform numeric addition first:
+
+```javascript
+'Count: ' + 5 + 2;   // 'Count: 52'
+'Count: ' + (5 + 2); // 'Count: 7'
+5 + 2 + ' items';    // '7 items'
+```
