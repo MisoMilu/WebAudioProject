@@ -146,7 +146,7 @@ class Particle{
     this.y = this.y + this.speedY;// UP: negative, Down: positive
 
     // what if you want the particles to shrink? (anything you want to change overtime, you can put in update())
-    if (this.size > 0.2) this.size -= 0.08;
+    if (this.size > 0.2) this.size -= 0.05;
   }
   draw(){ /*Custom method: Its job is to takes values 
     of constructor and pass it to the arc() method */
@@ -162,8 +162,18 @@ class Particle{
 // init(); we dont need init() function now.
 //  thats just for when you want particles to appear automatically
 
-
+// indexes i and j are just for looking 2 elements at the same time
 function handleParticles(){
+   // for every particle, cycle through every other particle. isnt that O(n^2) of time
+    // here, j is a particle, and i is another particle
+    for (let j = i; j < particlesArray.length; j++){
+      /* The goal here is to calculate the distance between two particles.
+      use Pytagoream therom!! x^2 + x^y = c*/
+      const dx = particlesArray[i].x - particlesArray[j].x; // change in x. particle i's x minus paritcle j's x
+      const dy = particlesArray[i].y - particlesArray[j].x; // change in y. particle i's y minus paritcle j's y
+      distance = Math.sqrt(dx*dx + dy*dy); // a^2 + b^2 = c^2 . The hypothnuse of the imaginary right traingle
+    }
+  }
   /*Drawing all particles. 0. Get initial value 
   1. draw it 2. wipe it 3. update new value*/
   for (let i = 0; i < particlesArray.length; i++){
@@ -175,7 +185,7 @@ function handleParticles(){
         console.log(particlesArray.length);
         i--; // the array size changed, and the next element's index becomes 1 smaller
     } 
-  }
+   
 }
 //custom function  will be called over and over creating a function loop
 function animate(){

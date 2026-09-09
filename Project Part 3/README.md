@@ -1583,3 +1583,77 @@ Operations with `+` are evaluated from left to right. Parentheses let you perfor
 'Count: ' + (5 + 2); // 'Count: 7'
 5 + 2 + ' items';    // '7 items'
 ```
+
+## Part 3: Trying to draw lines between every pair of particles
+
+### Knowledge needed: inner `for` loop and the Pythagorean theorem
+
+### My thoughts: `i` and `j` are just looking at elements
+
+> So the inner loop's `j` is looking at another particle, and `i` is looking at one particle. `i` and `j` are just looking at elements—that's what indexes are for!
+
+`i` and `j` are indexes: numbers that tell us which element to access in the array. The particles themselves are `particlesArray[i]` and `particlesArray[j]`.
+
+While the inner loop runs, **`i` stays fixed and `j` moves through the other particles**. After the inner loop finishes, the outer loop moves `i` to the next particle.
+
+With particles A, B, C, D and an inner loop starting at `j = i + 1`:
+
+```text
+Array index:  0  1  2  3
+Particle:    A  B  C  D
+
+i picks A → j visits B, C, D → compare A–B, A–C, A–D
+i picks B → j visits C, D    → compare B–C, B–D
+i picks C → j visits D       → compare C–D
+i picks D → no particles after D, so the inner loop does not run
+```
+
+It's like one person standing still while everyone after them takes a turn measuring their distance from that person. Then the next person gets their turn.
+
+Starting at `j = i + 1` skips comparing a particle with itself and checks each pair once. Starting at `j = i`, like in my original code, also compares each particle with itself.
+
+> My question: for every particle, cycle through every other particle—isn't that O(n²) time?
+
+Yes! There are `n * (n - 1) / 2` pairs when we skip self-comparisons. That still grows as **O(n²)**.
+
+### Finding the distance with the Pythagorean theorem
+
+Imagine a right triangle between two particles. The horizontal and vertical gaps are its legs, and the straight line between the particles is its hypotenuse.
+
+```js
+const dx = particlesArray[i].x - particlesArray[j].x;
+const dy = particlesArray[i].y - particlesArray[j].y;
+const distance = Math.sqrt(dx * dx + dy * dy);
+```
+
+The Pythagorean theorem says `a² + b² = c²`, so the distance is `√(dx² + dy²)`.
+
+For example, particles at `(1, 2)` and `(5, 5)` have `dx = -4` and `dy = -3`. Squaring gives `16 + 9 = 25`, and the square root is `5`. They are 5 pixels apart.
+
+**Correction to my original code:** `dy` must subtract the other particle's `.y`, not its `.x`. Also, declare `distance` with `const`.
+
+### Using the pair to draw a line
+
+This comparison loop can run after updating particles and removing the ones that are too small:
+
+```js
+for (let i = 0; i < particlesArray.length; i++) {
+  for (let j = i + 1; j < particlesArray.length; j++) {
+    const dx = particlesArray[i].x - particlesArray[j].x;
+    const dy = particlesArray[i].y - particlesArray[j].y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Example: only connect particles less than 100 pixels apart.
+    if (distance < 100) {
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+      ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+      ctx.stroke();
+    }
+  }
+}
+```
+
+Calculating `distance` only gives us a number. `moveTo()` sets the line's starting point, `lineTo()` adds the line to the other particle, and `stroke()` draws it. The `100`-pixel limit is an example; removing the condition would connect every pair.
